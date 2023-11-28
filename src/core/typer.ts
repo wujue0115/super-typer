@@ -105,7 +105,7 @@ export default class Typer {
    * @param {TCallbacks} [callbacks={}]
    * @returns {this}
    */
-  public addCommandWithType(
+  public addCommand(
     command: "type" | "backspace" | "arrowLeft" | "arrowRight" | "wait",
     argument: string | number,
     options: TOptions = {},
@@ -117,7 +117,6 @@ export default class Typer {
       options,
       callbacks
     });
-    this._run();
     return this;
   }
 
@@ -135,7 +134,8 @@ export default class Typer {
     options: TOptions = {},
     callbacks: TCallbacks = {}
   ) {
-    this.addCommandWithType("type", input, options, callbacks);
+    this.addCommand("type", input, options, callbacks);
+    this._run();
     return this;
   }
 
@@ -153,7 +153,8 @@ export default class Typer {
     options: TOptions = {},
     callbacks: TCallbacks = {}
   ) {
-    this.addCommandWithType("backspace", counts, options, callbacks);
+    this.addCommand("backspace", counts, options, callbacks);
+    this._run();
     return this;
   }
 
@@ -171,7 +172,8 @@ export default class Typer {
     options: TOptions = {},
     callbacks: TCallbacks = {}
   ) {
-    this.addCommandWithType("arrowLeft", counts, options, callbacks);
+    this.addCommand("arrowLeft", counts, options, callbacks);
+    this._run();
     return this;
   }
 
@@ -189,7 +191,8 @@ export default class Typer {
     options: TOptions = {},
     callbacks: TCallbacks = {}
   ) {
-    this.addCommandWithType("arrowRight", counts, options, callbacks);
+    this.addCommand("arrowRight", counts, options, callbacks);
+    this._run();
     return this;
   }
 
@@ -207,7 +210,8 @@ export default class Typer {
     options: TOptions = {},
     callbacks: TCallbacks = {}
   ) {
-    this.addCommandWithType("wait", milliseconds, options, callbacks);
+    this.addCommand("wait", milliseconds, options, callbacks);
+    this._run();
     return this;
   }
 
