@@ -248,23 +248,9 @@ export default class Typer {
 
       this._currentCallbacks.onBeforeChange(this._output, this._cursorPosition);
 
-      switch (command.command) {
-        case "type":
-          await this._type(command.argument as string);
-          break;
-        case "backspace":
-          await this._backspace(command.argument as number);
-          break;
-        case "arrowLeft":
-          await this._arrowLeft(command.argument as number);
-          break;
-        case "arrowRight":
-          await this._arrowRight(command.argument as number);
-          break;
-        case "wait":
-          await this._wait(command.argument as number);
-          break;
-      }
+      (this[`_${command.command}`] as (arg: string | number) => Promise<void>)(
+        command.argument
+      );
 
       this._currentCallbacks.onAfterChange(this._output, this._cursorPosition);
     }
