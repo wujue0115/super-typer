@@ -57,6 +57,10 @@ export default class Typer {
     return this._isRunning;
   }
 
+  public get isPaused() {
+    return this._isPaused;
+  }
+
   public addCommands(commands: TCommand[]) {
     for (const command of commands) {
       this._queue.push(command);
