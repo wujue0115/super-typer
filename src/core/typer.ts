@@ -343,10 +343,8 @@ export default class Typer {
    * const normalizedCount3 = this._normalizeCounts(-3);   // returns 8
    */
   private _normalizeCounts(counts: number) {
+    counts < 0 && (counts = this._output.length + counts + 1);
     counts = Math.min(counts, this._output.length);
-    if (counts < 0) {
-      counts = this._output.length + counts + 1;
-    }
     return counts;
   }
 
