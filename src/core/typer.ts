@@ -84,7 +84,11 @@ export default class Typer {
   }
 
   public reset() {
-    this._isRunning ? (this._isReset = true) : this._reset();
+    this._isRunning
+      ? ((this._isReset = true),
+        (this._isRunning = false),
+        (this._isPaused = false))
+      : this._reset();
     return this;
   }
 
