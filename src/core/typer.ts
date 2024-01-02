@@ -44,13 +44,14 @@ export default class Typer {
   constructor(
     private _globalOptions: TOptions = {},
     private _globalCallbacks: TCallbacks = {},
-    public commands: TCommand[] = []
+    commands: TCommand[] = []
   ) {
     this._currentOptions = { ...Typer.defaultOptions, ...this._globalOptions };
     this._currentCallbacks = {
       ...Typer.defaultCallbacks,
       ...this._globalCallbacks
     };
+    this.addCommands(commands);
   }
 
   public get isRunning() {
