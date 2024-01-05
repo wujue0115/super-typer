@@ -152,17 +152,17 @@ export default class Typer {
    * Delete a specified amount of characters.
    *
    * @public
-   * @param {number} counts
+   * @param {number} count
    * @param {TOptions} [options={}]
    * @param {TCallbacks} [callbacks={}]
    * @returns {this}
    */
   public backspace(
-    counts: number,
+    count: number,
     options: TOptions = {},
     callbacks: TCallbacks = {}
   ) {
-    this.addCommand("backspace", counts, options, callbacks);
+    this.addCommand("backspace", count, options, callbacks);
     this._run();
     return this;
   }
@@ -171,17 +171,17 @@ export default class Typer {
    * Move the cursor to the left.
    *
    * @public
-   * @param {number} counts
+   * @param {number} count
    * @param {TOptions} [options={}]
    * @param {TCallbacks} [callbacks={}]
    * @returns {this}
    */
   public arrowLeft(
-    counts: number,
+    count: number,
     options: TOptions = {},
     callbacks: TCallbacks = {}
   ) {
-    this.addCommand("arrowLeft", counts, options, callbacks);
+    this.addCommand("arrowLeft", count, options, callbacks);
     this._run();
     return this;
   }
@@ -190,17 +190,17 @@ export default class Typer {
    * Move the cursor to the right.
    *
    * @public
-   * @param {number} counts
+   * @param {number} count
    * @param {TOptions} [options={}]
    * @param {TCallbacks} [callbacks={}]
    * @returns {this}
    */
   public arrowRight(
-    counts: number,
+    count: number,
     options: TOptions = {},
     callbacks: TCallbacks = {}
   ) {
-    this.addCommand("arrowRight", counts, options, callbacks);
+    this.addCommand("arrowRight", count, options, callbacks);
     this._run();
     return this;
   }
@@ -347,18 +347,18 @@ export default class Typer {
    * Normalizes the specified count value based on the length of the output.
    *
    * @private
-   * @param {number} counts - The count value to normalize.
+   * @param {number} count - The count value to normalize.
    * @returns {number} The normalized count value.
    * @example
    * // Assuming this._output.length is 10
-   * const normalizedCount1 = this._normalizeCounts(5);    // returns 5
-   * const normalizedCount2 = this._normalizeCounts(15);   // returns 10
-   * const normalizedCount3 = this._normalizeCounts(-3);   // returns 8
+   * const normalizedCount1 = this._normalizeCount(5);    // returns 5
+   * const normalizedCount2 = this._normalizeCount(15);   // returns 10
+   * const normalizedCount3 = this._normalizeCount(-3);   // returns 8
    */
-  private _normalizeCounts(counts: number) {
-    counts < 0 && (counts = this._output.length + counts + 1);
-    counts = Math.min(counts, this._output.length);
-    return counts;
+  private _normalizeCount(count: number) {
+    const mod = this._output.length + 1;
+    count = ((count % mod) + mod) % mod;
+    return count;
   }
 
   /**
@@ -366,13 +366,13 @@ export default class Typer {
    *
    * @private
    * @async
-   * @param {number} counts - The number of times to press the backspace key.
+   * @param {number} count - The number of times to press the backspace key.
    * @returns {Promise<void>} A promise resolving when the backspace operation is complete.
    */
-  private async _backspace(counts: number) {
-    counts = this._normalizeCounts(counts);
+  private async _backspace(count: number) {
+    count = this._normalizeCount(count);
 
-    for (let i = 0; i < counts; ++i) {
+    for (let i = 0; i < count; ++i) {
       this._isPaused && (await this._pause());
 
       if (this._isReset) {
@@ -393,13 +393,13 @@ export default class Typer {
    *
    * @private
    * @async
-   * @param {number} counts - The number of positions to move left.
+   * @param {number} count - The number of positions to move left.
    * @returns {Promise<void>} A promise resolving when the cursor movement is complete.
    */
-  private async _arrowLeft(counts: number) {
-    counts = this._normalizeCounts(counts);
+  private async _arrowLeft(count: number) {
+    count = this._normalizeCount(count);
 
-    for (let i = 0; i < counts; ++i) {
+    for (let i = 0; i < count; ++i) {
       this._isPaused && (await this._pause());
 
       if (this._isReset) {
@@ -420,13 +420,13 @@ export default class Typer {
    *
    * @private
    * @async
-   * @param {number} counts - The number of positions to move right.
+   * @param {number} count - The number of positions to move right.
    * @returns {Promise<void>} A promise resolving when the cursor movement is complete.
    */
-  private async _arrowRight(counts: number) {
-    counts = this._normalizeCounts(counts);
+  private async _arrowRight(count: number) {
+    count = this._normalizeCount(count);
 
-    for (let i = 0; i < counts; ++i) {
+    for (let i = 0; i < count; ++i) {
       this._isPaused && (await this._pause());
 
       if (this._isReset) {
