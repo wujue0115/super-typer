@@ -1,6 +1,10 @@
 # super-typer.js
 
-`super-typer.js` is a JavaScript library that allows you to create a typing effect on your website.
+> `super-typer.js` is a JavaScript library that allows you to create a typing effect on your website.
+
+## Demo
+
+[Simple Demo](https://codepen.io/virrkfus-the-looper/pen/vYPOPBo?editors=1111)
 
 ## Table of Contents
 
