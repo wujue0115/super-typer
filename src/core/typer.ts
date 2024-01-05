@@ -246,12 +246,14 @@ export default class Typer {
       const command = this._queue.pop();
 
       this._currentOptions = {
-        ...this._currentOptions,
+        ...Typer.defaultOptions,
+        ...this._globalOptions,
         ...command.options
       };
 
       this._currentCallbacks = {
-        ...this._currentCallbacks,
+        ...Typer.defaultCallbacks,
+        ...this._globalCallbacks,
         ...command.callbacks
       };
 
@@ -294,11 +296,6 @@ export default class Typer {
     this._queue.clear();
     this._output = "";
     this._cursorPosition = 0;
-    this._currentOptions = { ...Typer.defaultOptions, ...this._globalOptions };
-    this._currentCallbacks = {
-      ...Typer.defaultCallbacks,
-      ...this._globalCallbacks
-    };
   }
 
   /**
