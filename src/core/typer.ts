@@ -34,6 +34,8 @@ export default class Typer {
 
   private _output: string = "";
   private _cursorPosition: number = 0;
+  private _globalOptions: TOptions = {};
+  private _globalCallbacks: TCallbacks = {};
   private _currentOptions: TOptions = {};
   private _currentCallbacks: TCallbacks = {};
 
@@ -42,16 +44,14 @@ export default class Typer {
   private _isReset: boolean = false;
 
   constructor(
-    private _globalOptions: TOptions = {},
-    private _globalCallbacks: TCallbacks = {},
+    globalOptions: TOptions = {},
+    globalCallbacks: TCallbacks = {},
     commands: TCommand[] = []
   ) {
-    this._currentOptions = { ...Typer.defaultOptions, ...this._globalOptions };
-    this._currentCallbacks = {
-      ...Typer.defaultCallbacks,
-      ...this._globalCallbacks
-    };
+    this.setGlobalOptions(globalOptions);
+    this.setGlobalCallbacks(globalCallbacks);
     this.addCommands(commands);
+    this._init();
   }
 
   public get isRunning() {
@@ -75,12 +75,12 @@ export default class Typer {
   }
 
   public setGlobalOptions(options: TOptions) {
-    this._globalOptions = { ...options };
+    this._globalOptions = options;
     return this;
   }
 
   public setGlobalCallbacks(callbacks: TCallbacks) {
-    this._globalCallbacks = { ...callbacks };
+    this._globalCallbacks = callbacks;
     return this;
   }
 
@@ -278,6 +278,27 @@ export default class Typer {
       this._currentCallbacks.onAfterChange(this._output, this._cursorPosition);
     }
     this._isRunning = false;
+    this._init();
+  }
+
+  /**
+   * Initialize the typer.
+   *
+   * @private
+   */
+  private _init() {
+    this._isRunning = false;
+    this._isPaused = false;
+    this._isReset = false;
+
+    this._queue.clear();
+    this._output = "";
+    this._cursorPosition = 0;
+    this._currentOptions = { ...Typer.defaultOptions, ...this._globalOptions };
+    this._currentCallbacks = {
+      ...Typer.defaultCallbacks,
+      ...this._globalCallbacks
+    };
   }
 
   /**
@@ -286,13 +307,7 @@ export default class Typer {
    * @private
    */
   private _reset() {
-    this._isRunning = false;
-    this._isPaused = false;
-    this._isReset = false;
-
-    this._queue.clear();
-    this._output = "";
-    this._cursorPosition = 0;
+    this._init();
     this._currentCallbacks.onChange(this._output, this._cursorPosition);
   }
 
