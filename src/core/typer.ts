@@ -65,8 +65,15 @@ export default class Typer {
     return this;
   }
 
-  public setGlobalOptions(options: TOptions) {
-    this._globalOptions = options;
+  public setGlobalOptions(options: TOptions, isMerge = true) {
+    if (isMerge) {
+      this._globalOptions = {
+        ...this._globalOptions,
+        ...options
+      };
+    } else {
+      this._globalOptions = options;
+    }
     return this;
   }
 
