@@ -22,18 +22,17 @@
     - [isPaused](#ispaused)
   - [Methods](#methods)
     - [setGlobalOptions(options)](#setglobaloptionsoptions)
-    - [setGlobalCallbacks(callbacks)](#setglobalcallbackscallbacks)
     - [addCommand(command)](#addcommandcommand)
     - [addCommands(commands)](#addcommandscommands)
     - [clearCommands()](#clearcommands)
     - [start()](#start)
     - [pause()](#pause)
     - [reset()](#reset)
-    - [type(text, options, callbacks)](#typetext-options-callbacks)
-    - [backspace(count, options, callbacks)](#backspacecount-options-callbacks)
-    - [arrowLeft(count, options, callbacks)](#arrowleftcount-options-callbacks)
-    - [arrowRight(count, options, callbacks)](#arrowrightcount-options-callbacks)
-    - [wait(time, options, callbacks)](#waittime-options-callbacks)
+    - [type(text, options)](#typetext-options)
+    - [backspace(count, options)](#backspacecount-options)
+    - [arrowLeft(count, options)](#arrowleftcount-options)
+    - [arrowRight(count, options)](#arrowrightcount-options)
+    - [wait(time, options)](#waittime-options)
 
 
 ## Installation
@@ -148,7 +147,7 @@ superTyper.start();
 
 ### Constructor
 
-The constructor of `Typer` accepts three arguments, the [global options](#global-options) object, the [global callbacks](#global-callbacks) object, and the [commands](#commands) array, for example:
+The constructor of `Typer` accepts two arguments, the [global options](#global-options) object and the [commands](#commands) array, for example:
 
 ```js
 new Typer(/* global options */, /* commands */);
@@ -241,35 +240,35 @@ The `pause` method is used to pause the execution of the commands.
 
 The `reset` method is used to stop execution and clear the all commands.
 
-#### `type(text, options, callbacks)`
+#### `type(text, options)`
 
-The `type` method simulates text input, it is used to add a `type` command and start the execution of the commands. It accepts three arguments, following is the description of each argument:
+The `type` method simulates text input, it is used to add a `type` command and start the execution of the commands. It accepts two arguments, following is the description of each argument:
 
 - `text`: The content to be typed.
 - `options`: The options of this command, it will override the `global options`.
 
-#### `backspace(count, options, callbacks)`
+#### `backspace(count, options)`
 
-The `backspace` method simulates a backspace keypress, it is used to add a `backspace` command and start the execution of the commands. It accepts three arguments, following is the description of each argument:
-
-- `count`: The number of characters to delete, if the value is negative, the text will be delete (all characters length + count + 1) characters. For example, with the text **"Hello!"** and a value of `-1`, the result is **"Hello"**. If the value is `-2`, the text becomes **"Hello"**. Thus, a value of `-1` is equivalent to deleting the entire text.
-- `options`: The options of this command, it will override the [Global Options](#global-options).
-
-#### `arrowLeft(count, options, callbacks)`
-
-The `arrowLeft` method simulates a left arrow keypress, it is used to add a `arrowLeft` command and start the execution of the commands. It accepts three arguments, and same as the `backspace` method, following is the description of each argument:
+The `backspace` method simulates a backspace keypress, it is used to add a `backspace` command and start the execution of the commands. It accepts two arguments, following is the description of each argument:
 
 - `count`: The number of characters to delete, if the value is negative, the text will be delete (all characters length + count + 1) characters. For example, with the text **"Hello!"** and a value of `-1`, the result is **"Hello"**. If the value is `-2`, the text becomes **"Hello"**. Thus, a value of `-1` is equivalent to deleting the entire text.
 - `options`: The options of this command, it will override the [Global Options](#global-options).
 
-#### `arrowRight(count, options, callbacks)`
+#### `arrowLeft(count, options)`
 
-The `arrowRight` method simulates a right arrow keypress, it is used to add a `arrowRight` command and start the execution of the commands. It accepts three arguments, and same as the `backspace` method, following is the description of each argument:
+The `arrowLeft` method simulates a left arrow keypress, it is used to add a `arrowLeft` command and start the execution of the commands. It accepts two arguments, and same as the `backspace` method, following is the description of each argument:
 
 - `count`: The number of characters to delete, if the value is negative, the text will be delete (all characters length + count + 1) characters. For example, with the text **"Hello!"** and a value of `-1`, the result is **"Hello"**. If the value is `-2`, the text becomes **"Hello"**. Thus, a value of `-1` is equivalent to deleting the entire text.
 - `options`: The options of this command, it will override the [Global Options](#global-options).
 
-#### `wait(time, options, callbacks)`
+#### `arrowRight(count, options)`
+
+The `arrowRight` method simulates a right arrow keypress, it is used to add a `arrowRight` command and start the execution of the commands. It accepts two arguments, and same as the `backspace` method, following is the description of each argument:
+
+- `count`: The number of characters to delete, if the value is negative, the text will be delete (all characters length + count + 1) characters. For example, with the text **"Hello!"** and a value of `-1`, the result is **"Hello"**. If the value is `-2`, the text becomes **"Hello"**. Thus, a value of `-1` is equivalent to deleting the entire text.
+- `options`: The options of this command, it will override the [Global Options](#global-options).
+
+#### `wait(time, options)`
 The `wait` method is used to add a `wait` command and start the execution of the commands. It accepts one argument, following is the description of each argument:
 
 - `time`: The time to wait in milliseconds.
