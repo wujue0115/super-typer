@@ -16,7 +16,6 @@
 - [Typer API](#typer-api)
   - [Constructor](#constructor)
     - [Global Options](#global-options)
-    - [Global Callbacks](#global-callbacks)
     - [Commands](#commands)
   - [Properties](#properties)
     - [isRunning](#isrunning)
@@ -108,9 +107,8 @@ The basic usage of `super-typer.js` is as follows:
 const superTyper = new Typer(
   { 
     // The speed of the typing effect in milliseconds.
-    speed: 100
-  },
-  {
+    speed: 100,
+
     // The onChange function is called every time when the text changes.
     onChange: (text) => {
       console.log(text);
@@ -153,7 +151,7 @@ superTyper.start();
 The constructor of `Typer` accepts three arguments, the [global options](#global-options) object, the [global callbacks](#global-callbacks) object, and the [commands](#commands) array, for example:
 
 ```js
-new Typer(/* global options */, /* global callbacks */, /* commands */);
+new Typer(/* global options */, /* commands */);
 ```
 
 #### Global Options
@@ -163,21 +161,15 @@ The `global options` object is used to configure the `Typer` instance, it accept
 ```js
 {
   // The speed of the typing effect in milliseconds, default value is 100.
-  speed: 100
-}
-```
+  speed: 100,
 
-#### Global Callbacks
-
-The `global callbacks` object is used to configure the callbacks of the `Typer` instance, it accepts the following properties:
-
-```js
-{
   // The onChange function is called every time when the text changes.
   // The "text" argument is the current text, and the "cursorPosition" argument is the current cursor position in the text.
   onChange: (text, cursorPosition) => {},
+
   // The onBeforeChange function is called before the text changes.
   onBeforeChange: (text, cursorPosition) => {},
+
   // The onAfterChange function is called after the text changes.
   onAfterChange: (text, cursorPosition) => {},
 }
@@ -199,11 +191,7 @@ The `commands` array is a list of commands that will be executed by the `Typer` 
 
   // The "options" property is the same as the constructor's "global options" argument and will override it.
   options: {
-    speed: 80
-  },
-
-  // The "callbacks" property is the same as the constructor's "global callbacks" argument and will override it.
-  callbacks: {
+    speed: 80,
     onChange: (text, cursorPosition) => {},
     onBeforeChange: (text, cursorPosition) => {},
     onAfterChange: (text, cursorPosition) => {},
@@ -226,10 +214,6 @@ The `isPaused` property is a getter that returns a boolean value indicating whet
 #### `setGlobalOptions(options)`
 
 The `setGlobalOptions` method is used to set the `global options` of the `Typer` instance.
-
-#### `setGlobalCallbacks(callbacks)`
-
-The `setGlobalCallbacks` method is used to set the `global callbacks` of the `Typer` instance.
 
 #### `addCommand(command)`
 
@@ -261,7 +245,6 @@ The `type` method simulates text input, it is used to add a `type` command and s
 
 - `text`: The content to be typed.
 - `options`: The options of this command, it will override the `global options`.
-- `callbacks`: The callbacks of this command, it will override the `global callbacks`.
 
 #### `backspace(count, options, callbacks)`
 
@@ -269,7 +252,6 @@ The `backspace` method simulates a backspace keypress, it is used to add a `back
 
 - `count`: The number of characters to delete, if the value is negative, the text will be delete (all characters length + count + 1) characters. For example, with the text **"Hello!"** and a value of `-1`, the result is **"Hello"**. If the value is `-2`, the text becomes **"Hello"**. Thus, a value of `-1` is equivalent to deleting the entire text.
 - `options`: The options of this command, it will override the [Global Options](#global-options).
-- `callbacks`: The callbacks of this command, it will override the [Global Callbacks](#global-callbacks).
 
 #### `arrowLeft(count, options, callbacks)`
 
@@ -277,7 +259,6 @@ The `arrowLeft` method simulates a left arrow keypress, it is used to add a `arr
 
 - `count`: The number of characters to delete, if the value is negative, the text will be delete (all characters length + count + 1) characters. For example, with the text **"Hello!"** and a value of `-1`, the result is **"Hello"**. If the value is `-2`, the text becomes **"Hello"**. Thus, a value of `-1` is equivalent to deleting the entire text.
 - `options`: The options of this command, it will override the [Global Options](#global-options).
-- `callbacks`: The callbacks of this command, it will override the [Global Callbacks](#global-callbacks).
 
 #### `arrowRight(count, options, callbacks)`
 
@@ -285,16 +266,12 @@ The `arrowRight` method simulates a right arrow keypress, it is used to add a `a
 
 - `count`: The number of characters to delete, if the value is negative, the text will be delete (all characters length + count + 1) characters. For example, with the text **"Hello!"** and a value of `-1`, the result is **"Hello"**. If the value is `-2`, the text becomes **"Hello"**. Thus, a value of `-1` is equivalent to deleting the entire text.
 - `options`: The options of this command, it will override the [Global Options](#global-options).
-- `callbacks`: The callbacks of this command, it will override the [Global Callbacks](#global-callbacks).
-
 
 #### `wait(time, options, callbacks)`
 The `wait` method is used to add a `wait` command and start the execution of the commands. It accepts one argument, following is the description of each argument:
 
 - `time`: The time to wait in milliseconds.
 - `options`: The options of this command, it will override the [Global Options](#global-options).
-- `callbacks`: The callbacks of this command, it will override the [Global Callbacks](#global-callbacks).
-
 
 ## License
 [MIT](https://github.com/wujue0115/super-typer/blob/main/LICENSE)
