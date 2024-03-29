@@ -1,30 +1,28 @@
 import { Queue } from "../utils/queue";
 import { delayCallback } from "../utils/helper";
 
-export type TOptions = {
-  speed?: number;
-};
-
 export type TCallbacks = {
   onChange?: (output: string, cursorPosition: number) => void;
   onBeforeChange?: (output: string, cursorPosition: number) => void;
   onAfterChange?: (output: string, cursorPosition: number) => void;
 };
 
+export type TProperties = {
+  speed?: number;
+};
+
+export type TOptions = TProperties & TCallbacks;
+
 export type TCommand = {
   command: "type" | "backspace" | "arrowLeft" | "arrowRight" | "wait";
   argument: string | number;
   options: TOptions;
-  callbacks: TCallbacks;
 };
 
 export default class Typer {
   static readonly defaultOptions: TOptions = {
     // The speed of typing in milliseconds per character.
-    speed: 100
-  };
-
-  static readonly defaultCallbacks: TCallbacks = {
+    speed: 100,
     onChange: () => {},
     onBeforeChange: () => {},
     onAfterChange: () => {}
@@ -35,21 +33,14 @@ export default class Typer {
   private _output: string = "";
   private _cursorPosition: number = 0;
   private _globalOptions: TOptions = {};
-  private _globalCallbacks: TCallbacks = {};
   private _currentOptions: TOptions = {};
-  private _currentCallbacks: TCallbacks = {};
 
   private _isRunning: boolean = false;
   private _isPaused: boolean = false;
   private _isReset: boolean = false;
 
-  constructor(
-    globalOptions: TOptions = {},
-    globalCallbacks: TCallbacks = {},
-    commands: TCommand[] = []
-  ) {
+  constructor(globalOptions: TOptions = {}, commands: TCommand[] = []) {
     this.setGlobalOptions(globalOptions);
-    this.setGlobalCallbacks(globalCallbacks);
     this.addCommands(commands);
     this._init();
   }
@@ -76,11 +67,6 @@ export default class Typer {
 
   public setGlobalOptions(options: TOptions) {
     this._globalOptions = options;
-    return this;
-  }
-
-  public setGlobalCallbacks(callbacks: TCallbacks) {
-    this._globalCallbacks = callbacks;
     return this;
   }
 
@@ -111,20 +97,17 @@ export default class Typer {
    * @param {("type" | "backspace" | "arrowLeft" | "arrowRight" | "wait")} command
    * @param {(string | number)} argument
    * @param {TOptions} [options={}]
-   * @param {TCallbacks} [callbacks={}]
    * @returns {this}
    */
   public addCommand(
     command: "type" | "backspace" | "arrowLeft" | "arrowRight" | "wait",
     argument: string | number,
-    options: TOptions = {},
-    callbacks: TCallbacks = {}
+    options: TOptions = {}
   ) {
     this._queue.push({
       command,
       argument,
-      options,
-      callbacks
+      options
     });
     return this;
   }
@@ -135,15 +118,10 @@ export default class Typer {
    * @public
    * @param {string} input
    * @param {TOptions} [options={}]
-   * @param {TCallbacks} [callbacks={}]
    * @returns {this}
    */
-  public type(
-    input: string,
-    options: TOptions = {},
-    callbacks: TCallbacks = {}
-  ) {
-    this.addCommand("type", input, options, callbacks);
+  public type(input: string, options: TOptions = {}) {
+    this.addCommand("type", input, options);
     this._run();
     return this;
   }
@@ -154,15 +132,10 @@ export default class Typer {
    * @public
    * @param {number} count
    * @param {TOptions} [options={}]
-   * @param {TCallbacks} [callbacks={}]
    * @returns {this}
    */
-  public backspace(
-    count: number,
-    options: TOptions = {},
-    callbacks: TCallbacks = {}
-  ) {
-    this.addCommand("backspace", count, options, callbacks);
+  public backspace(count: number, options: TOptions = {}) {
+    this.addCommand("backspace", count, options);
     this._run();
     return this;
   }
@@ -173,15 +146,10 @@ export default class Typer {
    * @public
    * @param {number} count
    * @param {TOptions} [options={}]
-   * @param {TCallbacks} [callbacks={}]
    * @returns {this}
    */
-  public arrowLeft(
-    count: number,
-    options: TOptions = {},
-    callbacks: TCallbacks = {}
-  ) {
-    this.addCommand("arrowLeft", count, options, callbacks);
+  public arrowLeft(count: number, options: TOptions = {}) {
+    this.addCommand("arrowLeft", count, options);
     this._run();
     return this;
   }
@@ -192,15 +160,10 @@ export default class Typer {
    * @public
    * @param {number} count
    * @param {TOptions} [options={}]
-   * @param {TCallbacks} [callbacks={}]
    * @returns {this}
    */
-  public arrowRight(
-    count: number,
-    options: TOptions = {},
-    callbacks: TCallbacks = {}
-  ) {
-    this.addCommand("arrowRight", count, options, callbacks);
+  public arrowRight(count: number, options: TOptions = {}) {
+    this.addCommand("arrowRight", count, options);
     this._run();
     return this;
   }
@@ -211,15 +174,10 @@ export default class Typer {
    * @public
    * @param {number} milliseconds
    * @param {TOptions} [options={}]
-   * @param {TCallbacks} [callbacks={}]
    * @returns {this}
    */
-  public wait(
-    milliseconds: number,
-    options: TOptions = {},
-    callbacks: TCallbacks = {}
-  ) {
-    this.addCommand("wait", milliseconds, options, callbacks);
+  public wait(milliseconds: number, options: TOptions = {}) {
+    this.addCommand("wait", milliseconds, options);
     this._run();
     return this;
   }
@@ -251,13 +209,7 @@ export default class Typer {
         ...command.options
       };
 
-      this._currentCallbacks = {
-        ...Typer.defaultCallbacks,
-        ...this._globalCallbacks,
-        ...command.callbacks
-      };
-
-      this._currentCallbacks.onBeforeChange(this._output, this._cursorPosition);
+      this._currentOptions.onBeforeChange(this._output, this._cursorPosition);
 
       switch (command.command) {
         case "type":
@@ -277,7 +229,7 @@ export default class Typer {
           break;
       }
 
-      this._currentCallbacks.onAfterChange(this._output, this._cursorPosition);
+      this._currentOptions.onAfterChange(this._output, this._cursorPosition);
     }
     this._isRunning = false;
     this._init();
@@ -305,7 +257,7 @@ export default class Typer {
    */
   private _reset() {
     this._init();
-    this._currentCallbacks.onChange(this._output, this._cursorPosition);
+    this._currentOptions.onChange(this._output, this._cursorPosition);
   }
 
   /**
@@ -349,7 +301,7 @@ export default class Typer {
 
       await delayCallback((resolve) => {
         this._typeLetter(input[i]);
-        this._currentCallbacks.onChange(this._output, this._cursorPosition);
+        this._currentOptions.onChange(this._output, this._cursorPosition);
         resolve();
       }, this._currentOptions.speed);
     }
@@ -394,7 +346,7 @@ export default class Typer {
 
       await delayCallback((resolve) => {
         this._backspaceLetter();
-        this._currentCallbacks.onChange(this._output, this._cursorPosition);
+        this._currentOptions.onChange(this._output, this._cursorPosition);
         resolve();
       }, this._currentOptions.speed);
     }
@@ -421,7 +373,7 @@ export default class Typer {
 
       await delayCallback((resolve) => {
         this._arrowLeftLetter();
-        this._currentCallbacks.onChange(this._output, this._cursorPosition);
+        this._currentOptions.onChange(this._output, this._cursorPosition);
         resolve();
       }, this._currentOptions.speed);
     }
@@ -448,7 +400,7 @@ export default class Typer {
 
       await delayCallback((resolve) => {
         this._arrowRightLetter();
-        this._currentCallbacks.onChange(this._output, this._cursorPosition);
+        this._currentOptions.onChange(this._output, this._cursorPosition);
         resolve();
       }, this._currentOptions.speed);
     }
