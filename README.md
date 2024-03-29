@@ -211,9 +211,11 @@ The `isPaused` property is a getter that returns a boolean value indicating whet
 
 ### Methods
 
-#### `setGlobalOptions(options)`
+#### `setGlobalOptions(options, isMerge = true)`
 
 The `setGlobalOptions` method is used to set the `global options` of the `Typer` instance.
+
+The second argument is optional, if it is `true`, the `options` will be merged with the existing `global options`, otherwise, the `options` will replace the existing `global options`.
 
 #### `addCommand(command)`
 
