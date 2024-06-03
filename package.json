@@ -31,8 +31,8 @@
     "url": "https://github.com/Wujue0115/super-typer/issues"
   },
   "type": "module",
-  "main": "./dist/super-typer.cjs.js",
-  "module": "./dist/super-typer.esm.js",
+  "main": "./dist/super-typer.cjs",
+  "module": "./dist/super-typer.mjs",
   "unpkg": "./dist/super-typer.global.js",
   "jsdelivr": "./dist/super-typer.global.js",
   "types": "./dist/super-typer.d.ts",
