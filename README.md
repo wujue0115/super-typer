@@ -70,7 +70,7 @@ The ES Module import method is as follows:
   <body>
     ...
     <script type="module">
-      import Typer from "https://unpkg.com/super-typer/dist/super-typer.esm.js";
+      import Typer from "https://unpkg.com/super-typer/dist/super-typer.mjs";
     </script>
   </body>
 </html>
